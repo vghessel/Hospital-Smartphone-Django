@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
+from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
+from django.shortcuts import redirect
 from .models import Cliente, Aparelho
 import re
 import json
@@ -43,6 +46,37 @@ def clientes(request):
 
 def att_cliente(request):
     id_cliente = request.POST.get('id_cliente')
+
     cliente = Cliente.objects.filter(id=id_cliente)
-    cliente_json = json.loads(serializers.serialize('json', cliente))[0]['fields'] # str -> json
-    return JsonResponse(cliente_json) # Retornando para o JS
+    aparelhos = Aparelho.objects.filter(cliente=cliente[0])
+
+    clientes_json = json.loads(serializers.serialize('json', cliente))[0]['fields'] # str -> json
+    aparelhos_json = json.loads(serializers.serialize('json', aparelhos))
+    aparelhos_json = [{'fields': aparelho['fields'], 'id': aparelho['pk']} for aparelho in aparelhos_json]
+    data = {'cliente': clientes_json, 'aparelhos': aparelhos_json}
+    return JsonResponse(data) # Retornando para o JS
+
+@csrf_exempt
+def update_aparelho(request, id):
+    nome_aparelho = request.POST.get('aparelho')
+    modelo = request.POST.get('modelo')
+    codigo = request.POST.get('codigo')
+
+    aparelho = Aparelho.objects.get(id=id)
+    list_aparelhos = Aparelho.objects.filter(codigo=codigo).exclude(id=id)
+    if list_aparelhos.exists():
+        return HttpResponse('Codigo ja existente')
+    
+    aparelho.aparelho = nome_aparelho
+    aparelho.modelo = modelo
+    aparelho.codigo = codigo
+    aparelho.save()
+    return HttpResponse('Dados alterados com sucesso!')
+
+def excluir_aparelho(request, id):
+    try:
+        aparelho = Aparelho.objects.get(id=id)
+        aparelho.delete()
+        return redirect(reverse('clientes') + f'?aba=att_cliente&id_cliente={id}')
+    except:
+        return redirect(reverse('clientes') + f'?aba=att_cliente&id_cliente={id}')

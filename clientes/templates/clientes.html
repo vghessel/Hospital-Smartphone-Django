@@ -66,10 +66,11 @@
         </div>
 
         <div id="att_cliente">  
-            <p></p>
+            <p>Cliente:</p>
             <select id="cliente-select" value="cliente-select" onchange="dados_cliente()" class="form-control">
+                <option value=""></option>
                 {% for cliente in clientes %}
-                <option value="{{cliente.id}}">{{cliente.nome}}</option>
+                    <option value="{{cliente.id}}">{{cliente.nome}}</option>
                 {% endfor %}
             </select>
             <br>
@@ -84,7 +85,15 @@
                 <input id="email" type="text" class='form-control'>
                 <p>CPF:</p>
                 <input id="cpf" type="text" class='form-control'>
+                <hr>
+                <h3>Aparelhos</h3>
 
+                <div id="aparelhos">
+
+                </div>
+
+
+        
             </div>
         </div>        
 
