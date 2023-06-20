@@ -44,6 +44,8 @@ function dados_cliente() {
         
         aux = document.getElementById('form-att-cliente')
         aux.style.display = 'block'
+
+        document.getElementById('id').value = data['cliente_id']
         document.getElementById('nome').value = data['cliente']['nome']
         document.getElementById('sobrenome').value = data['cliente']['sobrenome']
         document.getElementById('email').value = data['cliente']['email']
@@ -75,6 +77,43 @@ function dados_cliente() {
                 </div><br>"
 
         }
+
+    })
+
+}
+
+function update_cliente() {
+
+    id = document.getElementById('id').value
+    nome = document.getElementById('nome').value
+    sobrenome = document.getElementById('sobrenome').value
+    email = document.getElementById('email').value
+    cpf = document.getElementById('cpf').value
+
+    fetch('/clientes/update_cliente/' + id, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrf_token,    
+        },
+        body: JSON.stringify({ // enviando dados com stringfy
+            nome: nome,
+            sobrenome: sobrenome,
+            email: email,
+            cpf: cpf,            
+        })
+    }).then(function(result){
+        return result.json()
+    }).then(function(data){
+        if(data['status'] == '200') {
+            nome = data['nome']
+            sobrenome = data['sobrenome']
+            email = data['email']
+            cpf = data['cpf']
+            console.log('Dados alterados com sucesso')
+        }else {
+            console.log('Algo deu errado')
+        }
+
 
     })
 

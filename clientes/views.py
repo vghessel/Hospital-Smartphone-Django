@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from .models import Cliente, Aparelho
 import re
 import json
@@ -51,9 +51,10 @@ def att_cliente(request):
     aparelhos = Aparelho.objects.filter(cliente=cliente[0])
 
     clientes_json = json.loads(serializers.serialize('json', cliente))[0]['fields'] # str -> json
+    cliente_id = json.loads(serializers.serialize('json', cliente))[0]['pk']
     aparelhos_json = json.loads(serializers.serialize('json', aparelhos))
     aparelhos_json = [{'fields': aparelho['fields'], 'id': aparelho['pk']} for aparelho in aparelhos_json]
-    data = {'cliente': clientes_json, 'aparelhos': aparelhos_json}
+    data = {'cliente': clientes_json, 'aparelhos': aparelhos_json, 'cliente_id': cliente_id}
     return JsonResponse(data) # Retornando para o JS
 
 @csrf_exempt
@@ -80,3 +81,22 @@ def excluir_aparelho(request, id):
         return redirect(reverse('clientes') + f'?aba=att_cliente&id_cliente={id}')
     except:
         return redirect(reverse('clientes') + f'?aba=att_cliente&id_cliente={id}')
+    
+def update_cliente(request, id):
+    body = json.loads(request.body)
+
+    nome = body['nome']
+    sobrenome = body['sobrenome']
+    email = body['email']
+    cpf = body['cpf']
+
+    cliente = get_object_or_404(Cliente, id=id) # caso não exista o cliente, 404
+    try:
+        cliente.nome = nome
+        cliente.sobrenome = sobrenome
+        cliente.email = email
+        cliente.cpf = cpf
+        cliente.save()
+        return JsonResponse({'status': '200', 'nome': nome, 'sobrenome': sobrenome, 'email': email, 'cpf': cpf})
+    except:
+        return JsonResponse({'status': '500'})
