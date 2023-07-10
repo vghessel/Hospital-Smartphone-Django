@@ -1,8 +1,7 @@
 from django.db import models
 
 class Cliente(models.Model):
-    nome = models.CharField(max_length=50)
-    sobrenome = models.CharField(max_length=50)
+    nome_completo = models.CharField(max_length=80, default=True)
     email = models.EmailField(max_length=50)
     cpf = models.CharField(max_length=11)
 

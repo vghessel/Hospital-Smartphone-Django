@@ -8,13 +8,25 @@ from .models import Cliente, Aparelho
 import re
 import json
 
+def lista_clientes(request):
+    if request.method == "GET":
+        clientes = Cliente.objects.all()
+        return render(request, 'lista_clientes.html', {'clientes': clientes})
+    
+def excluir_cliente(request, id):
+    try:
+        cliente = Cliente.objects.get(id=id)
+        cliente.delete()
+        return redirect(reverse('clientes'))
+    except:
+        return redirect(reverse('clientes'))
+
 def clientes(request):
     if request.method == "GET":
         clientes_list = Cliente.objects.all()
         return render(request, 'clientes.html', {'clientes': clientes_list})
     elif request.method == "POST":
-        nome = request.POST.get('nome')
-        sobrenome = request.POST.get('sobrenome')
+        nome_completo = request.POST.get('nome_completo')
         email = request.POST.get('email')
         cpf = request.POST.get('cpf')
         aparelhos = request.POST.getlist('aparelho')
@@ -24,14 +36,13 @@ def clientes(request):
         cliente = Cliente.objects.filter(cpf=cpf)
 
         if cliente.exists():
-            return render(request, 'clientes.html', {'nome': nome, 'sobrenome': sobrenome, 'email': email, 'aparelhos': zip(aparelhos, modelos, codigos) })
+            return render(request, 'clientes.html', {'nome_completo': nome_completo, 'email': email, 'aparelhos': zip(aparelhos, modelos, codigos) })
 
         if not re.fullmatch(re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+'), email):
-            return render(request, 'clientes.html', {'nome': nome, 'sobrenome': sobrenome, 'cpf': cpf, 'aparelhos': zip(aparelhos, modelos, codigos)})
+            return render(request, 'clientes.html', {'nome_completo': nome_completo,'cpf': cpf, 'aparelhos': zip(aparelhos, modelos, codigos)})
 
         cliente = Cliente(
-            nome = nome,
-            sobrenome = sobrenome,
+            nome_completo = nome_completo,
             email = email,
             cpf = cpf
         )
@@ -85,18 +96,16 @@ def excluir_aparelho(request, id):
 def update_cliente(request, id):
     body = json.loads(request.body)
 
-    nome = body['nome']
-    sobrenome = body['sobrenome']
+    nome_completo = body['nome_completo']
     email = body['email']
     cpf = body['cpf']
 
     cliente = get_object_or_404(Cliente, id=id) # caso não exista o cliente, 404
     try:
-        cliente.nome = nome
-        cliente.sobrenome = sobrenome
+        cliente.nome_completo = nome_completo
         cliente.email = email
         cliente.cpf = cpf
         cliente.save()
-        return JsonResponse({'status': '200', 'nome': nome, 'sobrenome': sobrenome, 'email': email, 'cpf': cpf})
+        return JsonResponse({'status': '200', 'nome_completo': nome_completo,'email': email, 'cpf': cpf})
     except:
         return JsonResponse({'status': '500'})

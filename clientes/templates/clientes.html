@@ -20,12 +20,8 @@
             <form action="{% url 'clientes' %}" method="POST">{% csrf_token %}
                 <div class="row">
                     <div class="col-md">
-                        <p>Nome:</p>
-                        <input type="text" class="form-control" placeholder="Primeiro nome" name="nome" value="{{nome}}">
-                    </div>
-                    <div class="col-md">
-                        <p>Sobrenome:</p>
-                        <input type="text" class="form-control" placeholder="Sobrenome" name="sobrenome" value="{{sobrenome}}">
+                        <p>Nome Completo:</p>
+                        <input type="text" class="form-control" placeholder="Nome completo" name="nome_completo" value="{{nome_completo}}">
                     </div>
                 </div>
                 <br>
@@ -71,7 +67,7 @@
             <select id="cliente-select" value="cliente-select" onchange="dados_cliente()" class="form-control">
                 <option value=""></option>
                 {% for cliente in clientes %}
-                    <option value="{{cliente.id}}">{{cliente.nome}}</option>
+                    <option value="{{cliente.id}}">{{cliente.nome_completo}}</option>
                 {% endfor %}
             </select>
             <br>
@@ -79,10 +75,8 @@
             
             <div id="form-att-cliente">
                 <input type="hidden" id="id">
-                <p>Nome:</p>
-                <input id="nome" type="text" class='form-control'>
-                <p>Sobrenome:</p>
-                <input id="sobrenome" type="text" class='form-control'>
+                <p>Nome Completo:</p>
+                <input id="nome_completo" type="text" class='form-control'>
                 <p>E-mail:</p>
                 <input id="email" type="text" class='form-control'>
                 <p>CPF:</p>

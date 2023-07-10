@@ -1,0 +1,20 @@
+.distanciamento {
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.actions {
+    cursor: pointer;
+}
+
+.btn-add-clientes{
+
+    background-color: var(--contrast-color);
+    padding: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    float: right;
+    margin-right: 100px;
+    
+
+}

@@ -46,8 +46,7 @@ function dados_cliente() {
         aux.style.display = 'block'
 
         document.getElementById('id').value = data['cliente_id']
-        document.getElementById('nome').value = data['cliente']['nome']
-        document.getElementById('sobrenome').value = data['cliente']['sobrenome']
+        document.getElementById('nome_completo').value = data['cliente']['nome_completo']
         document.getElementById('email').value = data['cliente']['email']
         document.getElementById('cpf').value = data['cliente']['cpf']
 
@@ -85,8 +84,7 @@ function dados_cliente() {
 function update_cliente() {
 
     id = document.getElementById('id').value
-    nome = document.getElementById('nome').value
-    sobrenome = document.getElementById('sobrenome').value
+    nome_completo = document.getElementById('nome_completo').value
     email = document.getElementById('email').value
     cpf = document.getElementById('cpf').value
 
@@ -96,8 +94,7 @@ function update_cliente() {
             'X-CSRFToken': csrf_token,    
         },
         body: JSON.stringify({ // enviando dados com stringfy
-            nome: nome,
-            sobrenome: sobrenome,
+            nome_completo: nome_completo,
             email: email,
             cpf: cpf,            
         })
@@ -105,8 +102,7 @@ function update_cliente() {
         return result.json()
     }).then(function(data){
         if(data['status'] == '200') {
-            nome = data['nome']
-            sobrenome = data['sobrenome']
+            nome_completo = data['nome_completo']
             email = data['email']
             cpf = data['cpf']
             console.log('Dados alterados com sucesso')
