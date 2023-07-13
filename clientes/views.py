@@ -8,23 +8,14 @@ from .models import Cliente, Aparelho
 import re
 import json
 
-def lista_clientes(request):
-    if request.method == "GET":
-        clientes = Cliente.objects.all()
-        return render(request, 'lista_clientes.html', {'clientes': clientes})
-    
-def excluir_cliente(request, id):
-    try:
-        cliente = Cliente.objects.get(id=id)
-        cliente.delete()
-        return redirect(reverse('clientes'))
-    except:
-        return redirect(reverse('clientes'))
-
 def clientes(request):
     if request.method == "GET":
-        clientes_list = Cliente.objects.all()
-        return render(request, 'clientes.html', {'clientes': clientes_list})
+        clientes = Cliente.objects.all()
+        return render(request, 'clientes.html', {'clientes': clientes})
+    
+def novo_cliente(request):
+    if request.method == "GET":
+        return render(request, 'novo_cliente.html')
     elif request.method == "POST":
         nome_completo = request.POST.get('nome_completo')
         email = request.POST.get('email')
@@ -53,7 +44,15 @@ def clientes(request):
             apa = Aparelho(aparelho=aparelho, modelo=modelo, codigo=codigo, cliente=cliente)
             apa.save()
 
-        return HttpResponse('Teste')
+        return HttpResponse('Cliente salvo com sucesso')
+    
+def excluir_cliente(request, id):
+    try:
+        cliente = Cliente.objects.get(id=id)
+        cliente.delete()
+        return redirect(reverse('clientes'))
+    except:
+        return redirect(reverse('clientes'))
 
 def att_cliente(request):
     id_cliente = request.POST.get('id_cliente')
