@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block 'head' %}
+    <link rel="stylesheet" href="{% static 'clientes/css/lista_clientes.css' %}">
+{% endblock %}
+
+{% block 'dashboard' %}
+    <br>
+    <br>
+    <div class="container">
+        <div id="att_cliente">  
+            <div id="form-att-cliente">
+                <input type="hidden" id="id">
+                <p>Nome Completo:</p>
+                <input id="nome_completo" type="text" class='form-control' value="{{nome_completo}}">
+                <br>
+                <p>E-mail:</p>
+                <input id="email" type="text" class='form-control' value="{{email}}">
+                <br>
+                <p>CPF:</p>
+                <input id="cpf" type="text" class='form-control' value="{{cpf}}">
+                <br>
+                <input onclick="update_cliente()" type="submit" value="Salvar" class="btn btn-success">
+                <hr style="background-color: gray;">
+                <h3>Aparelhos</h3>
+
+                <div id="aparelhos">
+
+                </div>
+
+
+        
+            </div>
+        </div>       
+    </div>
+    
+
+    <script src="{% static 'clientes/js/clientes.js' %}"></script>
+{% endblock %}

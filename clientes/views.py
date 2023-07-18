@@ -54,7 +54,19 @@ def excluir_cliente(request, id):
     except:
         return redirect(reverse('clientes'))
 
-def att_cliente(request):
+def atualizar_cliente(request, id):
+
+    cliente = Cliente.objects.filter(id=id)
+    cliente_json = json.loads(serializers.serialize('json', cliente))[0]['fields']
+    nome_completo = cliente_json['nome_completo']
+    email = cliente_json['email']
+    cpf = cliente_json['cpf']
+    print(nome_completo)
+
+    return render(request, 'atualizar_cliente.html', {'nome_completo': nome_completo, 'email': email, 'cpf': cpf})
+
+# Apenas para usar de base
+def info_att_cliente(request):
     id_cliente = request.POST.get('id_cliente')
 
     cliente = Cliente.objects.filter(id=id_cliente)
@@ -65,7 +77,7 @@ def att_cliente(request):
     aparelhos_json = json.loads(serializers.serialize('json', aparelhos))
     aparelhos_json = [{'fields': aparelho['fields'], 'id': aparelho['pk']} for aparelho in aparelhos_json]
     data = {'cliente': clientes_json, 'aparelhos': aparelhos_json, 'cliente_id': cliente_id}
-    return JsonResponse(data) # Retornando para o JS
+    return JsonResponse(data) # Retornando para o JS e renderizar html
 
 @csrf_exempt
 def update_aparelho(request, id):
@@ -88,9 +100,9 @@ def excluir_aparelho(request, id):
     try:
         aparelho = Aparelho.objects.get(id=id)
         aparelho.delete()
-        return redirect(reverse('clientes') + f'?aba=att_cliente&id_cliente={id}')
+        return redirect(reverse('clientes') + f'?aba=info_att_cliente&id_cliente={id}')
     except:
-        return redirect(reverse('clientes') + f'?aba=att_cliente&id_cliente={id}')
+        return redirect(reverse('clientes') + f'?aba=info_att_cliente&id_cliente={id}')
     
 def update_cliente(request, id):
     body = json.loads(request.body)

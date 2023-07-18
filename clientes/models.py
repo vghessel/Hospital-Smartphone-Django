@@ -6,7 +6,7 @@ class Cliente(models.Model):
     cpf = models.CharField(max_length=11)
 
     def __str__(self) -> str:
-        return self.nome
+        return self.nome_completo
     
 class Aparelho(models.Model):
     aparelho = models.CharField(max_length=20)
