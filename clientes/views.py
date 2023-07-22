@@ -56,14 +56,36 @@ def excluir_cliente(request, id):
 
 def atualizar_cliente(request, id):
 
-    cliente = Cliente.objects.filter(id=id)
-    cliente_json = json.loads(serializers.serialize('json', cliente))[0]['fields']
-    nome_completo = cliente_json['nome_completo']
-    email = cliente_json['email']
-    cpf = cliente_json['cpf']
-    print(nome_completo)
+    # Trazer info do banco para o front
+    if request.method == "GET":
+        cliente = Cliente.objects.filter(id=id)
+        aparelhos = Aparelho.objects.filter(cliente=cliente[0])
+        cliente_json = json.loads(serializers.serialize('json', cliente))[0]['fields']
+        aparelhos_json = json.loads(serializers.serialize('json', aparelhos))
+        aparelhos_json = [{'fields': aparelho['fields']} for aparelho in aparelhos_json]
+        print(len(aparelhos_json))
+        nome_completo = cliente_json['nome_completo']
+        email = cliente_json['email']
+        cpf = cliente_json['cpf']
+        return render(request, 'atualizar_cliente.html', {'nome_completo': nome_completo, 'email': email, 'cpf': cpf, 'aparelhos': aparelhos_json})
+    
+    # Salvar novos dados no banco
+    elif request.method == "POST":
+        body = json.loads(request.body)
 
-    return render(request, 'atualizar_cliente.html', {'nome_completo': nome_completo, 'email': email, 'cpf': cpf})
+        nome_completo = body['nome_completo']
+        email = body['email']
+        cpf = body['cpf']
+
+        cliente = get_object_or_404(Cliente, id=id) # caso não exista o cliente, 404
+        try:
+            cliente.nome_completo = nome_completo
+            cliente.email = email
+            cliente.cpf = cpf
+            cliente.save()
+            return JsonResponse({'status': '200', 'nome_completo': nome_completo,'email': email, 'cpf': cpf})
+        except:
+            return JsonResponse({'status': '500'})
 
 # Apenas para usar de base
 def info_att_cliente(request):
