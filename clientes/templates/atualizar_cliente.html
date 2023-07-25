@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block 'head' %}
+    <link rel="stylesheet" href="{% static 'clientes/css/clientes.css' %}">
     <link rel="stylesheet" href="{% static 'clientes/css/lista_clientes.css' %}">
 {% endblock %}
 
@@ -10,8 +11,8 @@
     <br>
     <div class="container">
         <div id="att_cliente">  
-            <div id="form-att-cliente">
-                <input type="hidden" id="id">
+            <form action="{% url 'update_cliente' id %}" method="POST">{% csrf_token %}
+                <input type="hidden" id="id" value="{{id}}">
                 <p>Nome Completo:</p>
                 <input id="nome_completo" type="text" class='form-control' value="{{nome_completo}}">
                 <br>
@@ -21,20 +22,33 @@
                 <p>CPF:</p>
                 <input id="cpf" type="text" class='form-control' value="{{cpf}}">
                 <br>
-                <input onclick="update_cliente()" type="submit" value="Salvar" class="btn btn-success">
                 <hr style="background-color: gray;">
                 <h3>Aparelhos</h3>
-                    {{aparelhos}}
+                    
                 <div id="aparelhos">
+                    <br>
+                    {% for aparelho in aparelhos %}
+                        <div class="row">
+                            <div class="col-md">
+                                <input type='text' class='form-control' name='aparelho' value="{{aparelho.aparelho}}">
+                            </div>
 
+                            <div class="col-md">
+                                <input type='text' class='form-control' name='modelo' value="{{aparelho.modelo}}">
+                            </div>
+
+                            <div class="col-md">
+                                <input type='number' class='form-control' name='codigo' value="{{aparelho.codigo}}">
+                            </div>
+                            <a href="{% url 'excluir_aparelho' aparelho.id %}" class="delete" title="Excluir" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                        </div>
+                        <br>
+                    {% endfor %}
                 </div>
-
-
-        
-            </div>
+                <br>
+                <input type="submit" value="Salvar Informações" class="btn btn-success">   
+            </form>
         </div>       
     </div>
     
-
-    <script src="{% static 'clientes/js/clientes.js' %}"></script>
 {% endblock %}

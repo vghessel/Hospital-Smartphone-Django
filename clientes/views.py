@@ -61,45 +61,43 @@ def atualizar_cliente(request, id):
         cliente = Cliente.objects.filter(id=id)
         aparelhos = Aparelho.objects.filter(cliente=cliente[0])
         cliente_json = json.loads(serializers.serialize('json', cliente))[0]['fields']
-        aparelhos_json = json.loads(serializers.serialize('json', aparelhos))
-        aparelhos_json = [{'fields': aparelho['fields']} for aparelho in aparelhos_json]
-        print(len(aparelhos_json))
+        #aparelhos_json = json.loads(serializers.serialize('json', aparelhos))
+        #aparelhos_json = [{'fields': aparelho['fields']} for aparelho in aparelhos_json]
         nome_completo = cliente_json['nome_completo']
         email = cliente_json['email']
         cpf = cliente_json['cpf']
-        return render(request, 'atualizar_cliente.html', {'nome_completo': nome_completo, 'email': email, 'cpf': cpf, 'aparelhos': aparelhos_json})
+        return render(request, 'atualizar_cliente.html', {'id': id, 'nome_completo': nome_completo, 'email': email, 'cpf': cpf, 'aparelhos': aparelhos})
     
     # Salvar novos dados no banco
     elif request.method == "POST":
-        body = json.loads(request.body)
+        nome_completo = request.POST.get('nome_completo')
+        email = request.POST.get('email')
+        cpf = request.POST.get('cpf')
+        aparelhos = request.POST.getlist('aparelho')
+        modelos = request.POST.getlist('modelo')
+        codigos = request.POST.getlist('codigo')
 
-        nome_completo = body['nome_completo']
-        email = body['email']
-        cpf = body['cpf']
+        cliente = Cliente.objects.filter(cpf=cpf)
 
-        cliente = get_object_or_404(Cliente, id=id) # caso não exista o cliente, 404
-        try:
-            cliente.nome_completo = nome_completo
-            cliente.email = email
-            cliente.cpf = cpf
-            cliente.save()
-            return JsonResponse({'status': '200', 'nome_completo': nome_completo,'email': email, 'cpf': cpf})
-        except:
-            return JsonResponse({'status': '500'})
+        if cliente.exists():
+            return render(request, 'clientes.html', {'nome_completo': nome_completo, 'email': email, 'aparelhos': zip(aparelhos, modelos, codigos) })
 
-# Apenas para usar de base
-def info_att_cliente(request):
-    id_cliente = request.POST.get('id_cliente')
+        if not re.fullmatch(re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+'), email):
+            return render(request, 'clientes.html', {'nome_completo': nome_completo,'cpf': cpf, 'aparelhos': zip(aparelhos, modelos, codigos)})
 
-    cliente = Cliente.objects.filter(id=id_cliente)
-    aparelhos = Aparelho.objects.filter(cliente=cliente[0])
+        cliente = Cliente(
+            nome_completo = nome_completo,
+            email = email,
+            cpf = cpf
+        )
 
-    clientes_json = json.loads(serializers.serialize('json', cliente))[0]['fields'] # str -> json
-    cliente_id = json.loads(serializers.serialize('json', cliente))[0]['pk']
-    aparelhos_json = json.loads(serializers.serialize('json', aparelhos))
-    aparelhos_json = [{'fields': aparelho['fields'], 'id': aparelho['pk']} for aparelho in aparelhos_json]
-    data = {'cliente': clientes_json, 'aparelhos': aparelhos_json, 'cliente_id': cliente_id}
-    return JsonResponse(data) # Retornando para o JS e renderizar html
+        cliente.save()
+
+        for aparelho, modelo, codigo in zip(aparelhos, modelos, codigos):
+            apa = Aparelho(aparelho=aparelho, modelo=modelo, codigo=codigo, cliente=cliente)
+            apa.save()
+
+        return HttpResponse('Cliente salvo com sucesso')
 
 @csrf_exempt
 def update_aparelho(request, id):
@@ -108,6 +106,8 @@ def update_aparelho(request, id):
     codigo = request.POST.get('codigo')
 
     aparelho = Aparelho.objects.get(id=id)
+
+    # Verificacao se ja existe o mesmo codigo
     list_aparelhos = Aparelho.objects.filter(codigo=codigo).exclude(id=id)
     if list_aparelhos.exists():
         return HttpResponse('Codigo ja existente')
