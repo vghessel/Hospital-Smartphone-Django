@@ -11,16 +11,16 @@
     <br>
     <div class="container">
         <div id="att_cliente">  
-            <form action="{% url 'update_cliente' id %}" method="POST">{% csrf_token %}
+            <form action="{% url 'atualizar_cliente' id %}" method="POST">{% csrf_token %}
                 <input type="hidden" id="id" value="{{id}}">
                 <p>Nome Completo:</p>
-                <input id="nome_completo" type="text" class='form-control' value="{{nome_completo}}">
+                <input id="nome_completo" type="text" class='form-control' name="nome_completo" value="{{nome_completo}}">
                 <br>
                 <p>E-mail:</p>
-                <input id="email" type="text" class='form-control' value="{{email}}">
+                <input id="email" type="text" class='form-control' name="email" value="{{email}}">
                 <br>
                 <p>CPF:</p>
-                <input id="cpf" type="text" class='form-control' value="{{cpf}}">
+                <input id="cpf" type="text" class='form-control' name="cpf" value="{{cpf}}">
                 <br>
                 <hr style="background-color: gray;">
                 <h3>Aparelhos</h3>

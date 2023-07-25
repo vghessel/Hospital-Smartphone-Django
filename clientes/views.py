@@ -61,8 +61,6 @@ def atualizar_cliente(request, id):
         cliente = Cliente.objects.filter(id=id)
         aparelhos = Aparelho.objects.filter(cliente=cliente[0])
         cliente_json = json.loads(serializers.serialize('json', cliente))[0]['fields']
-        #aparelhos_json = json.loads(serializers.serialize('json', aparelhos))
-        #aparelhos_json = [{'fields': aparelho['fields']} for aparelho in aparelhos_json]
         nome_completo = cliente_json['nome_completo']
         email = cliente_json['email']
         cpf = cliente_json['cpf']
@@ -77,24 +75,22 @@ def atualizar_cliente(request, id):
         modelos = request.POST.getlist('modelo')
         codigos = request.POST.getlist('codigo')
 
-        cliente = Cliente.objects.filter(cpf=cpf)
-
-        if cliente.exists():
-            return render(request, 'clientes.html', {'nome_completo': nome_completo, 'email': email, 'aparelhos': zip(aparelhos, modelos, codigos) })
-
         if not re.fullmatch(re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+'), email):
-            return render(request, 'clientes.html', {'nome_completo': nome_completo,'cpf': cpf, 'aparelhos': zip(aparelhos, modelos, codigos)})
+            return render(request, 'clientes.html')
+        
+        cliente = get_object_or_404(Cliente, id=id)
 
-        cliente = Cliente(
-            nome_completo = nome_completo,
-            email = email,
-            cpf = cpf
-        )
+        cliente.nome_completo = nome_completo
+        cliente.email = email
+        cliente.cpf = cpf
 
         cliente.save()
 
         for aparelho, modelo, codigo in zip(aparelhos, modelos, codigos):
-            apa = Aparelho(aparelho=aparelho, modelo=modelo, codigo=codigo, cliente=cliente)
+            apa = Aparelho.objects.get(codigo=codigo)
+            apa.aparelho = aparelho
+            apa.modelo = modelo
+            apa.codigo = codigo
             apa.save()
 
         return HttpResponse('Cliente salvo com sucesso')
@@ -118,6 +114,9 @@ def update_aparelho(request, id):
     aparelho.save()
     return HttpResponse('Dados alterados com sucesso!')
 
+
+
+# Excluir e testar
 def excluir_aparelho(request, id):
     try:
         aparelho = Aparelho.objects.get(id=id)
@@ -125,7 +124,8 @@ def excluir_aparelho(request, id):
         return redirect(reverse('clientes') + f'?aba=info_att_cliente&id_cliente={id}')
     except:
         return redirect(reverse('clientes') + f'?aba=info_att_cliente&id_cliente={id}')
-    
+
+# Excluir e testar
 def update_cliente(request, id):
     body = json.loads(request.body)
 
