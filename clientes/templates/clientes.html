@@ -32,7 +32,7 @@
                         <td>{{cliente.cpf}}</td>
                         <td class="actions">
                             <a href="{% url 'atualizar_cliente' cliente.id %}" class="edit" title="Editar" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a href="{% url 'excluir_cliente' cliente.id %}"class="delete" title="Excluir" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                            <a href="{% url 'excluir_cliente' cliente.id %}" class="delete" title="Excluir" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </td>
                     </tr>
                     {% endfor %}

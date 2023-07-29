@@ -38,7 +38,7 @@
                             </div>
 
                             <div class="col-md">
-                                <input type='number' class='form-control' name='codigo' value="{{aparelho.codigo}}">
+                                <input type='number' class='form-control' name='codigo' value="{{aparelho.codigo}}" readonly="readonly">
                             </div>
                             <a href="{% url 'excluir_aparelho' aparelho.id %}" class="delete" title="Excluir" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </div>

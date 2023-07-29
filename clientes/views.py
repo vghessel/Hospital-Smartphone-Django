@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
@@ -44,7 +43,7 @@ def novo_cliente(request):
             apa = Aparelho(aparelho=aparelho, modelo=modelo, codigo=codigo, cliente=cliente)
             apa.save()
 
-        return HttpResponse('Cliente salvo com sucesso')
+        return redirect(reverse('clientes'))
     
 def excluir_cliente(request, id):
     try:
@@ -93,52 +92,14 @@ def atualizar_cliente(request, id):
             apa.codigo = codigo
             apa.save()
 
-        return HttpResponse('Cliente salvo com sucesso')
-
-@csrf_exempt
-def update_aparelho(request, id):
-    nome_aparelho = request.POST.get('aparelho')
-    modelo = request.POST.get('modelo')
-    codigo = request.POST.get('codigo')
-
-    aparelho = Aparelho.objects.get(id=id)
-
-    # Verificacao se ja existe o mesmo codigo
-    list_aparelhos = Aparelho.objects.filter(codigo=codigo).exclude(id=id)
-    if list_aparelhos.exists():
-        return HttpResponse('Codigo ja existente')
-    
-    aparelho.aparelho = nome_aparelho
-    aparelho.modelo = modelo
-    aparelho.codigo = codigo
-    aparelho.save()
-    return HttpResponse('Dados alterados com sucesso!')
+        return redirect(reverse('clientes'))
 
 
-
-# Excluir e testar
 def excluir_aparelho(request, id):
     try:
         aparelho = Aparelho.objects.get(id=id)
         aparelho.delete()
-        return redirect(reverse('clientes') + f'?aba=info_att_cliente&id_cliente={id}')
+        return redirect(reverse('clientes'))
     except:
-        return redirect(reverse('clientes') + f'?aba=info_att_cliente&id_cliente={id}')
+        return redirect(reverse('clientes'))
 
-# Excluir e testar
-def update_cliente(request, id):
-    body = json.loads(request.body)
-
-    nome_completo = body['nome_completo']
-    email = body['email']
-    cpf = body['cpf']
-
-    cliente = get_object_or_404(Cliente, id=id) # caso não exista o cliente, 404
-    try:
-        cliente.nome_completo = nome_completo
-        cliente.email = email
-        cliente.cpf = cpf
-        cliente.save()
-        return JsonResponse({'status': '200', 'nome_completo': nome_completo,'email': email, 'cpf': cpf})
-    except:
-        return JsonResponse({'status': '500'})

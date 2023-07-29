@@ -6,36 +6,11 @@ function add_aparelho() {
     container.innerHTML += html
 }
 
-function update_cliente() {
-
-    id = document.getElementById('id').value
-    nome_completo = document.getElementById('nome_completo').value
-    email = document.getElementById('email').value
-    cpf = document.getElementById('cpf').value
-
-    fetch('/clientes/update_cliente/' + id, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': csrf_token,    
-        },
-        body: JSON.stringify({
-            nome_completo: nome_completo,
-            email: email,
-            cpf: cpf,            
-        })
-    }).then(function(result){
-        return result.json()
-    }).then(function(data){
-        if(data['status'] == '200') {
-            nome_completo = data['nome_completo']
-            email = data['email']
-            cpf = data['cpf']
-            console.log('Dados alterados com sucesso')
-        }else {
-            console.log('Algo deu errado')
-        }
-
-
-    })
-
+function delete_cliente() {
+    console.log("chegando")
+    //var ask = window.confirm("Tem certeza que deseja excluir o cliente")
+    //if (ask) {
+        //window.alert("Cliente excluido com sucesso!")
+        //window.location.href = "clientes.html"
+    //}
 }
