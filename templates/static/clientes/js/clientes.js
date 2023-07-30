@@ -6,11 +6,11 @@ function add_aparelho() {
     container.innerHTML += html
 }
 
-function delete_cliente() {
-    console.log("chegando")
-    //var ask = window.confirm("Tem certeza que deseja excluir o cliente")
-    //if (ask) {
-        //window.alert("Cliente excluido com sucesso!")
-        //window.location.href = "clientes.html"
-    //}
+function deletar_cliente() {
+    id = document.getElementById('cliente-select').value
+    var ask = window.confirm("Tem certeza que deseja excluir o cliente?")
+    if (ask) {
+        window.alert("Cliente excluido com sucesso!")
+        window.location.href = "excluir_cliente/" + id
+    }
 }
