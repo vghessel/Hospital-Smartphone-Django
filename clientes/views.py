@@ -96,10 +96,15 @@ def atualizar_cliente(request, id):
 
 
 def excluir_aparelho(request, id):
+
+    body = json.loads(request.body)
+    id_cliente = body['id_cliente']
+    print(id_cliente)
     try:
         aparelho = Aparelho.objects.get(id=id)
         aparelho.delete()
-        return redirect(reverse('clientes'))
+        return redirect(reverse('atualizar_cliente', args=(id_cliente,)))
     except:
-        return redirect(reverse('clientes'))
+        return redirect(reverse('atualizar_cliente', args=(id_cliente,)))
+
 

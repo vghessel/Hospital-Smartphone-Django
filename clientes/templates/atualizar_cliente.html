@@ -24,8 +24,9 @@
                 <br>
                 <hr style="background-color: gray;">
                 <h3>Aparelhos</h3>
-                    
-                <div id="aparelhos">
+                <br>
+                <span class="btn-add-aparelhos" onclick="add_aparelho()">+ Adicionar um aparelho</span>
+                <div id="form-aparelho">
                     <br>
                     {% for aparelho in aparelhos %}
                         <div class="row">
@@ -40,7 +41,7 @@
                             <div class="col-md">
                                 <input type='number' class='form-control' name='codigo' value="{{aparelho.codigo}}" readonly="readonly">
                             </div>
-                            <a href="{% url 'excluir_aparelho' aparelho.id %}" class="delete" title="Excluir" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                            <span onclick="deletar_aparelho(this)" value="{{aparelho.id}}" class="delete" title="Excluir" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></span>
                         </div>
                         <br>
                     {% endfor %}
@@ -51,4 +52,5 @@
         </div>       
     </div>
     
+    <script src="{% static 'clientes/js/clientes.js' %}"></script>
 {% endblock %}
