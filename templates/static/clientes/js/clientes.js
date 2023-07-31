@@ -6,8 +6,8 @@ function add_aparelho() {
     container.innerHTML += html
 }
 
-function deletar_cliente() {
-    id = document.getElementById('cliente-select').value
+function deletar_cliente(delete_id) {
+    id = delete_id.getAttribute("value")
     var ask = window.confirm("Tem certeza que deseja excluir o cliente?")
     if (ask) {
         window.alert("Cliente excluido com sucesso!")
