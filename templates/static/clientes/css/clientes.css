@@ -32,3 +32,11 @@
     padding: 5px;
     font-size: 30px;
 }
+
+#back-btn {
+    margin-left: 18px;
+}
+
+#save-back{
+    float: right;
+}

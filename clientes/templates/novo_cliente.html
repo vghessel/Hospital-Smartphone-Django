@@ -48,7 +48,14 @@
                     </div>
                 </div>
                 <br>
-                <input type="submit" value="Cadastrar" class="btn-principal">
+                <div id="save-back" class="row">
+                    <div>
+                        <input id="cadastrar-btn" type="submit" value="Cadastrar" class="btn btn-success">
+                    </div>
+                    <div>
+                        <a href="{% url 'clientes' %}" id="back-btn" type="button" class="btn btn-primary">Voltar</a>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
