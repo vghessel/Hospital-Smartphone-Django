@@ -2,3 +2,15 @@
     padding-left: 100px;
     padding-right: 100px;
 }
+
+.btn-add-servicos{
+
+    background-color: var(--contrast-color);
+    padding: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    float: right;
+    margin-right: 100px;
+    
+
+}
