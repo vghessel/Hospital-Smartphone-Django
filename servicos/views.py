@@ -24,4 +24,5 @@ def listar_servico(request):
     
 def servico(request, identificador):
     servico = get_object_or_404(Servico, identificador=identificador)
-    return render(request, 'servico.html', {'servico': servico})
+    form = FormServico(instance=servico) # CRIAR OUTRO FORM COM TODOS OS CAMPOS
+    return render(request, 'servico.html', {'form': form})
