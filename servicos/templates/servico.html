@@ -10,8 +10,57 @@
     <br>
     <br>
     <div class="container">
-        {{servico.servico}}
+        <form action="{% url 'novo_servico' %}" method="POST">{% csrf_token %}
+            <div>
+                {{form.servico.label}}
+                {{form.servico}}
+                <br>
+                {{form.cliente.label}}
+                {{form.cliente}}
+                <br>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    {{form.data_inicio.label}}
+                    {{form.data_inicio}}
+                </div>
+                <div class="col-md">
+                    {{form.data_entrega.label}}
+                    {{form.data_entrega}}
+                </div>
+                <div class="col-md">
+                    {{form.preco.label}}
+                    {{form.preco}}
+                </div>
+            </div>
+            <br>
+            <div>
+                {{form.descricao.label}}
+                {{form.descricao}}
+            </div>
+            <br>
+            <div>
+                {{form.protocolo.label}}
+                {{form.protocolo}}
+            </div>
+            <br>
+            <div class="row">
+                <div id="finalizado-label" class="col-md">
+                    <p>Finalizado:</p>
+                </div>
+                <div id="finalizado-input" class="col-md">
+                    {{form.finalizado}}
+                </div>
+            </div>
+            <br>
+            <div id="save-back" class="row">
+                <div>
+                    <input id="save-btn" type="submit" value="Salvar Informações" class="btn btn-success">
+                </div>
+                <div>
+                    <a href="{% url 'servicos' %}" id="back-btn" type="button" class="btn btn-primary">Voltar</a>
+                </div>
+            </div>
+        </form>
     </div>
-
-
 {% endblock %}

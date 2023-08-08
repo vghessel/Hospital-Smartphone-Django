@@ -4,7 +4,7 @@ from .models import Servico
 class FormServico(ModelForm):
     class Meta:
         model = Servico
-        exclude = ['finalizado', 'protocolo', 'identificador']
+        fields = "__all__"
     
     # Personalizando o HTML
     def __init__(self, *args, **kwargs):
