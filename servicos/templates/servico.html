@@ -10,7 +10,7 @@
     <br>
     <br>
     <div class="container">
-        <form action="{% url 'novo_servico' %}" method="POST">{% csrf_token %}
+        <form action="{% url 'atualizar_servico' identificador %}" method="POST">{% csrf_token %}
             <div>
                 {{form.servico.label}}
                 {{form.servico}}

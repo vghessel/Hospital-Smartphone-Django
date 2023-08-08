@@ -24,5 +24,14 @@ def listar_servico(request):
     
 def servico(request, identificador):
     servico = get_object_or_404(Servico, identificador=identificador)
-    form = FormServico(instance=servico) # CRIAR OUTRO FORM COM TODOS OS CAMPOS
-    return render(request, 'servico.html', {'form': form})
+    form = FormServico(instance=servico)
+    return render(request, 'servico.html', {'form': form, 'identificador': identificador})
+
+def atualizar_servico(request, identificador):
+    form = FormServico(request.POST)
+
+    if form.is_valid():
+        form.save()
+        return HttpResponse('Salvo com sucesso')
+    else:
+        return render(request, 'novo_servico.html', {'form': form})    
