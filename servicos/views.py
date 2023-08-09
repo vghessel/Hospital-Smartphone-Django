@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from .forms import FormServico
 from .models import Servico
 
@@ -13,7 +13,7 @@ def novo_servico(request):
 
         if form.is_valid():
             form.save()
-            return HttpResponse('Salvo com sucesso')
+            return redirect(reverse('servicos'))
         else:
             return render(request, 'novo_servico.html', {'form': form}) # Enviar o form preenchido para manter as infos caso o save de errado
         
@@ -45,6 +45,6 @@ def atualizar_servico(request, identificador):
             servico.finalizado = form.cleaned_data['finalizado']
             servico.protocolo = form.cleaned_data['protocolo']
             servico.save()
-            return HttpResponse('Salvo com sucesso')
+            return redirect(reverse('servicos'))
         else:
             return render(request, 'servico.html', {'form': form, 'identificador': identificador})   
