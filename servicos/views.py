@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.http import FileResponse
+from fpdf import FPDF
+from io import BytesIO
 from .forms import FormServico
 from .models import Servico
 
@@ -47,4 +50,38 @@ def atualizar_servico(request, identificador):
             servico.save()
             return redirect(reverse('servicos'))
         else:
-            return render(request, 'servico.html', {'form': form, 'identificador': identificador})   
+            return render(request, 'servico.html', {'form': form, 'identificador': identificador})
+
+def gerar_pdf(request, identificador):
+    servico = get_object_or_404(Servico, identificador=identificador)
+    
+    pdf = FPDF()
+    pdf.add_page()
+
+    pdf.set_font('Arial', 'B', 16)
+    pdf.cell(0, 10, 'HOSPITAL DO SMARTPHONE', 0, 1, 'C')
+
+    pdf.set_font('Arial', 'I', 10)
+    pdf.cell(0, 10, 'Telefone: (11)912345678', 0, 1, 'C')
+    pdf.cell(0, 10, 'Endereço: Avenida Paulista, 1234', 0, 1, 'C')
+    pdf.cell(0, 10, 'CNPJ: 12.345.678/0001-99', 0, 1, 'C')
+
+    pdf.set_font('Arial', 'B', 12)
+    pdf.set_fill_color(240, 240, 240)
+    pdf.cell(35, 10, 'Cliente:', 1, 0, 'L', 1)
+    pdf.cell(0, 10, f'{servico.cliente.nome_completo}', 1, 1, 'L', 1)
+    pdf.cell(35, 10, 'Serviço:', 1, 0, 'L', 1)
+    pdf.cell(0, 10, f'{servico.servico}', 1, 1, 'L', 1)
+    pdf.cell(35, 10, 'Data de Início:', 1, 0, 'L', 1)
+    pdf.cell(0, 10, f'{servico.data_inicio}', 1, 1, 'L', 1)
+    pdf.cell(35, 10, 'Data de Entrega:', 1, 0, 'L', 1)
+    pdf.cell(0, 10, f'{servico.data_entrega}', 1, 1, 'L', 1)
+    pdf.cell(35, 10, 'Valor Total:', 1, 0, 'L', 1)
+    pdf.cell(0, 10, f'{servico.preco}', 1, 1, 'L', 1)
+    pdf.cell(35, 10, 'Protocolo:', 1, 0, 'L', 1)
+    pdf.cell(0, 10, f'{servico.protocolo}', 1, 1, 'L', 1)
+
+    pdf_content = pdf.output(dest='S').encode('latin1')
+    pdf_bytes = BytesIO(pdf_content)
+
+    return FileResponse(pdf_bytes, as_attachment=True, filename=f"{servico.protocolo}.pdf")
