@@ -11,3 +11,4 @@ class FormServico(ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs.update({'class': 'form-control'})
+        self.fields['protocolo'].widget.attrs.update({'readonly': 'readonly'})

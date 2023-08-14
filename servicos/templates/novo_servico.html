@@ -11,30 +11,30 @@
     <div class="container">
         <form action="{% url 'novo_servico' %}" method="POST">{% csrf_token %}
             <div>
-                {{form.servico.label}}
+                <p>Serviço:</p>
                 {{form.servico}}
                 <br>
-                {{form.cliente.label}}
+                <p>Cliente:</p>
                 {{form.cliente}}
                 <br>
             </div>
             <div class="row">
                 <div class="col-md">
-                    {{form.data_inicio.label}}
+                    <p>Data de Início:</p>
                     {{form.data_inicio}}
                 </div>
                 <div class="col-md">
-                    {{form.data_entrega.label}}
+                    <p>Data de Entrega:</p>
                     {{form.data_entrega}}
                 </div>
                 <div class="col-md">
-                    {{form.preco.label}}
+                    <p>Valor:</p>
                     {{form.preco}}
                 </div>
             </div>
             <br>
             <div>
-                {{form.descricao.label}}
+                <p>Descrição:</p>
                 {{form.descricao}}
             </div>
             <br>
