@@ -11,6 +11,7 @@
     cursor: pointer;
     float: right;
     margin-right: 100px;
+    color: aliceblue;
     
 
 }
@@ -22,4 +23,8 @@
 
 #finalizado-input{
     margin-right: 950px;
+}
+
+.protocolo-link {
+    color: #7c97f0;
 }

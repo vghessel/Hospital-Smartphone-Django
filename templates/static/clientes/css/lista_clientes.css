@@ -15,6 +15,7 @@
     cursor: pointer;
     float: right;
     margin-right: 100px;
+    color: aliceblue;
     
 
 }
@@ -29,4 +30,12 @@
 
 #save-back{
     float: right;
+}
+
+.delete {
+    color: #f0485b;;
+}
+
+.edit {
+    color: #7c97f0;
 }
