@@ -10,6 +10,11 @@
     <br>
     <br>
     <div class="container-fluid distanciamento">
+        <form action="{% url 'servicos_filtro' %}" method="GET">
+            <input type="text" name="protocolo" value="{{ request.GET.protocolo}}" class="p-1 border" autocomplete="off" placeholder="Protocolo">
+            <button type="submit" class="btn btn-info">Buscar</button>
+            <a href="{% url 'servicos' %}" class="btn btn-light">Limpar Filtro</a>
+        </form>
         <div>
             <a class="btn-add-servicos" href="{% url 'novo_servico' %}">+ Novo Serviço</a>
             <br>

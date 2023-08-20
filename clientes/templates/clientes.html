@@ -10,6 +10,11 @@
     <br>
     <br>
     <div class="container-fluid distanciamento">
+        <form action="{% url 'clientes_filtro' %}" method="GET">
+            <input type="text" name="cpf" value="{{ request.GET.cpf}}" class="p-1 border" autocomplete="off" placeholder="CPF">
+            <button type="submit" class="btn btn-info">Buscar</button>
+            <a href="{% url 'clientes' %}" class="btn btn-light">Limpar Filtro</a>
+        </form>
         <div>
             <a class="btn-add-clientes" href="{% url 'novo_cliente' %}">+ Novo Cliente</a>
             <br>

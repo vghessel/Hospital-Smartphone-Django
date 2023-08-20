@@ -85,3 +85,8 @@ def gerar_pdf(request, identificador):
     pdf_bytes = BytesIO(pdf_content)
 
     return FileResponse(pdf_bytes, as_attachment=True, filename=f"{servico.protocolo}.pdf")
+
+def servicos_filtro(request):
+    protocolo = request.GET.get('protocolo')
+    servicos = Servico.objects.filter(protocolo__contains=protocolo)
+    return render(request, 'listar_servico.html', {'servicos': servicos})

@@ -108,3 +108,7 @@ def excluir_aparelho(request, id):
         return redirect(reverse('atualizar_cliente', args=(id_cliente,)))
 
 
+def clientes_filtro(request):
+    cpf = request.GET.get('cpf')
+    clientes = Cliente.objects.filter(cpf__contains=cpf)
+    return render(request, 'clientes.html', {'clientes': clientes})
