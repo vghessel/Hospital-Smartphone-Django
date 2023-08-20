@@ -11,7 +11,8 @@
     cursor: pointer;
     float: right;
     margin-right: 100px;
-    color: aliceblue;
+    border-radius: 5px 5px 5px 5px;
+    color: rgb(255, 255, 255);
     
 
 }
@@ -26,5 +27,11 @@
 }
 
 .protocolo-link {
-    color: #7c97f0;
+    color: #353535;
+}
+
+.table {
+    border: 1px solid rgb(225, 225, 225);
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.485);
 }

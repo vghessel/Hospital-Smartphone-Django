@@ -15,18 +15,18 @@
 
     <title>{% block 'title' %}{% endblock %}</title>
   </head>
+  <header class="header">
+        <img class="logo_name" src="{% static 'general/img/logo.png' %}" alt="">
+  </header>
   <body>
-    
     <div class="sidebar">
-      <br>
         <div class="logo-details">
             <img class="logo_name" src="{% static 'general/img/logo.png' %}" alt="">
             <i class='bx bx-menu' id="btn" ></i>
         </div>
-        <br>
         <ul class="nav-list">
           <li>
-            <a href="#">
+            <a href="{% url 'clientes' %}">
               <i class='bx bx-grid-alt'></i>
               <span class="links_name">Página inicial</span>
             </a>
