@@ -25,6 +25,7 @@
     border: 1px solid rgb(225, 225, 225);
     border-radius: 5px 5px 5px 5px;
     box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.485);
+}
 
 
 .material-icons{
@@ -40,9 +41,9 @@
 }
 
 .delete {
-    color: #f0485b;;
+    color: #000000;;
 }
 
 .edit {
-    color: #7c97f0;
+    color: #000000;
 }
